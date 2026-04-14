@@ -1,0 +1,40 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_taskmaster
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-init-replica:
+    image: mongo:latest
+    container_name: mongo_init_repl
+    depends_on:
+      - mongodb
+    entrypoint: ["bash", "/scripts/init-replica.sh"]
+    volumes:
+      - ./scripts:/scripts
+    environment:
+      MONGO_HOST: mongodb:27017
+      REPL_SET_NAME: rs0
+
+  app:
+    build: .
+    container_name: spring_graphql_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATA_MONGODB_URI}
+      SPRING_DEVTOOLS_RESTART_ENABLED: ${SPRING_DEVTOOLS_RESTART_ENABLED}
+      SERVER_PORT: ${SPRING_SERVER_PORT}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    volumes:
+      - .:/app 
+    depends_on:
+      - mongodb
+      - mongo-init-replica
+
+volumes:
+  mongodb_data:
