@@ -1,0 +1,62 @@
+type Query {
+    findAllTasks(categoryId: ID, offset: Int = 0, limit: Int = 10): TaskPage
+    taskById(id: ID!): Task
+    categories(offset: Int = 0, limit: Int = 10): CategoryPage
+    categoryById(id: ID!): Category
+}
+
+type Mutation {
+    createTask(input: TaskInput!): Task
+    toggleTask(id: ID!): Task
+    updateTask(id: ID!, input: TaskInput!): Task
+    createCategory(input: CategoryInput!): Category
+    updateCategory(id: ID!, input: CategoryUpdateInput!): Category
+}
+
+input TaskInput {
+    title: String!
+    description: String
+    categoryId: ID
+}
+
+type Task {
+    id: ID
+    title: String
+    description: String
+    completed: Boolean
+    categoryId: ID
+    category: Category
+}
+
+type PageInfo {
+    offset: Int
+    limit: Int
+    totalCount: Int
+    hasNextPage: Boolean
+    hasPreviousPage: Boolean
+}
+
+type TaskPage {
+    items: [Task]
+    pageInfo: PageInfo
+}
+
+type CategoryPage {
+    items: [Category]
+    pageInfo: PageInfo
+}
+
+input CategoryInput {
+    name: String!
+}
+
+input CategoryUpdateInput {
+    name: String
+    isActive: Boolean
+}
+
+type Category {
+    id: ID
+    name: String
+    isActive: Boolean
+}
