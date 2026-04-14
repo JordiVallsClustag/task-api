@@ -1,4 +1,4 @@
-package me.idrojone.task_api.application.service;
+package me.idrojone.task_api.application.service.category;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import me.idrojone.task_api.application.dto.CategoryDto;
-import me.idrojone.task_api.application.dto.CategoryInput;
-import me.idrojone.task_api.application.dto.CategoryUpdateInput;
+import me.idrojone.task_api.application.dto.PageInfo;
+import me.idrojone.task_api.application.dto.category.CategoryDto;
+import me.idrojone.task_api.application.dto.category.CategoryInput;
+import me.idrojone.task_api.application.dto.category.CategoryPage;
+import me.idrojone.task_api.application.dto.category.CategoryUpdateInput;
 import me.idrojone.task_api.application.mapper.CategoryMapper;
 import me.idrojone.task_api.domain.exception.NotFoundException;
 import me.idrojone.task_api.domain.model.Category;
@@ -28,10 +30,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> getAllCategories() {
-        return categoryRepository.findAll().stream()
-                .map(CategoryMapper::toDto)
-                .collect(Collectors.toList());
+    public CategoryPage getAllCategories(Integer offset, Integer limit) {
+        int off = offset == null ? 0 : offset;
+        int lim = limit == null ? 10 : limit;
+        List<Category> cats = categoryRepository.findAll(off, lim);
+        int total = (int) categoryRepository.count();
+        List<CategoryDto> items = cats.stream().map(CategoryMapper::toDto).collect(Collectors.toList());
+        boolean hasNext = off + items.size() < total;
+        boolean hasPrevious = off > 0;
+        PageInfo pageInfo = new PageInfo(off, lim, total, hasNext, hasPrevious);
+        return new CategoryPage(items, pageInfo);
     }
 
     @Override

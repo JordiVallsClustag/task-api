@@ -10,11 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
-import me.idrojone.task_api.application.dto.TaskDto;
-import me.idrojone.task_api.application.dto.TaskInput;
-import me.idrojone.task_api.application.dto.CategoryDto;
-import me.idrojone.task_api.application.service.TaskService;
-import me.idrojone.task_api.application.service.CategoryService;
+import me.idrojone.task_api.application.dto.category.CategoryDto;
+import me.idrojone.task_api.application.dto.task.TaskDto;
+import me.idrojone.task_api.application.dto.task.TaskInput;
+import me.idrojone.task_api.application.dto.task.TaskPage;
+import me.idrojone.task_api.application.service.category.CategoryService;
+import me.idrojone.task_api.application.service.task.TaskService;
 
 @Controller
 @Validated
@@ -28,9 +29,13 @@ public class TaskController {
     }
 
     @QueryMapping
-    public List<TaskDto> findAllTasks(@Argument("categoryId") String categoryId) {
-        if (categoryId == null) return taskService.getAllTasks();
-        return taskService.getTasksByCategory(categoryId);
+    public TaskPage findAllTasks(@Argument("categoryId") String categoryId,
+                                @Argument Integer offset,
+                                @Argument Integer limit) {
+        int off = offset == null ? 0 : offset;
+        int lim = limit == null ? 10 : limit;
+        if (categoryId == null) return taskService.getAllTasks(off, lim);
+        return taskService.getTasksByCategory(categoryId, off, lim);
     }
 
     @SchemaMapping(typeName = "Task", field = "category")

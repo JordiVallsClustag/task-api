@@ -1,4 +1,4 @@
-package me.idrojone.task_api.application.service;
+package me.idrojone.task_api.application.service.task;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import me.idrojone.task_api.application.dto.TaskDto;
-import me.idrojone.task_api.application.dto.TaskInput;
+import me.idrojone.task_api.application.dto.PageInfo;
+import me.idrojone.task_api.application.dto.task.TaskDto;
+import me.idrojone.task_api.application.dto.task.TaskInput;
+import me.idrojone.task_api.application.dto.task.TaskPage;
 import me.idrojone.task_api.application.mapper.TaskMapper;
 import me.idrojone.task_api.domain.exception.NotFoundException;
 import me.idrojone.task_api.domain.model.Task;
@@ -26,17 +28,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDto> getAllTasks() {
-        return taskRepository.findAll().stream()
-                .map(TaskMapper::toDto)
-                .collect(Collectors.toList());
+    public TaskPage getAllTasks(int offset, int limit) {
+        List<Task> tasks = taskRepository.findAll(offset, limit);
+        int total = (int) taskRepository.count();
+        List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
+        boolean hasNext = offset + items.size() < total;
+        boolean hasPrevious = offset > 0;
+        PageInfo pageInfo = new PageInfo(offset, limit, total, hasNext, hasPrevious);
+        return new TaskPage(items, pageInfo);
     }
 
     @Override
-    public List<TaskDto> getTasksByCategory(String categoryId) {
-        return taskRepository.findByCategoryId(categoryId).stream()
-                .map(TaskMapper::toDto)
-                .collect(Collectors.toList());
+    public TaskPage getTasksByCategory(String categoryId, int offset, int limit) {
+        List<Task> tasks = taskRepository.findByCategoryId(categoryId, offset, limit);
+        int total = (int) taskRepository.countByCategoryId(categoryId);
+        List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
+        boolean hasNext = offset + items.size() < total;
+        boolean hasPrevious = offset > 0;
+        PageInfo pageInfo = new PageInfo(offset, limit, total, hasNext, hasPrevious);
+        return new TaskPage(items, pageInfo);
     }
 
     @Override

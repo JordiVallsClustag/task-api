@@ -1,7 +1,7 @@
 package me.idrojone.task_api.application.mapper;
 
-import me.idrojone.task_api.application.dto.CategoryDto;
-import me.idrojone.task_api.application.dto.CategoryInput;
+import me.idrojone.task_api.application.dto.category.CategoryDto;
+import me.idrojone.task_api.application.dto.category.CategoryInput;
 import me.idrojone.task_api.domain.model.Category;
 
 public final class CategoryMapper {

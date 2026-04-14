@@ -1,7 +1,7 @@
 package me.idrojone.task_api.application.mapper;
 
-import me.idrojone.task_api.application.dto.TaskDto;
-import me.idrojone.task_api.application.dto.TaskInput;
+import me.idrojone.task_api.application.dto.task.TaskDto;
+import me.idrojone.task_api.application.dto.task.TaskInput;
 import me.idrojone.task_api.domain.model.Task;
 
 public final class TaskMapper {

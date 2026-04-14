@@ -1,12 +1,11 @@
 type Query {
-    findAllTasks(categoryId: ID): [Task]
+    findAllTasks(categoryId: ID, offset: Int = 0, limit: Int = 10): TaskPage
     taskById(id: ID!): Task
-    categories: [Category]
+        categories(offset: Int = 0, limit: Int = 10): CategoryPage
     categoryById(id: ID!): Category
 }
 
 type Mutation {
-    # Usamos el objeto TaskInput definido abajo
     createTask(input: TaskInput!): Task
     toggleTask(id: ID!): Task
     updateTask(id: ID!, input: TaskInput!): Task
@@ -14,7 +13,6 @@ type Mutation {
     updateCategory(id: ID!, input: CategoryUpdateInput!): Category
 }
 
-# Definición del Input para buenas prácticas
 input TaskInput {
     title: String!
     description: String
@@ -29,6 +27,24 @@ type Task {
     categoryId: ID
     category: Category
 }
+
+type PageInfo {
+    offset: Int
+    limit: Int
+    totalCount: Int
+    hasNextPage: Boolean
+    hasPreviousPage: Boolean
+}
+
+type TaskPage {
+    items: [Task]
+    pageInfo: PageInfo
+}
+
+    type CategoryPage {
+        items: [Category]
+        pageInfo: PageInfo
+    }
 
 input CategoryInput {
     name: String!
