@@ -63,4 +63,9 @@ public class TaskController {
     public TaskDto updateTask(@Argument String id, @Argument @Valid TaskInput input) {
         return taskService.updateTask(id, input);
     }
+
+    @MutationMapping
+    public TaskDto toggleDeleteTask(@Argument String id) {
+        return taskService.toggleDeleteTask(id);
+    }
 }

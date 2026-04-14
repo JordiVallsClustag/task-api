@@ -9,6 +9,7 @@ type Mutation {
     createTask(input: TaskInput!): Task
     toggleTask(id: ID!): Task
     updateTask(id: ID!, input: TaskInput!): Task
+    toggleDeleteTask(id: ID!): Task
     createCategory(input: CategoryInput!): Category
     updateCategory(id: ID!, input: CategoryUpdateInput!): Category
 }
@@ -26,6 +27,9 @@ type Task {
     completed: Boolean
     categoryId: ID
     category: Category
+    deleted: Boolean
+    createdAt: String
+    updatedAt: String
 }
 
 type PageInfo {

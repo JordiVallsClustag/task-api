@@ -14,4 +14,5 @@ public interface TaskRepository {
     long count();
     long countByCategoryId(String categoryId);
     Task save(Task task);
+    void deleteById(String id);
 }

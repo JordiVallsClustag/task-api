@@ -2,6 +2,7 @@ package me.idrojone.task_api.application.service.task;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.Instant;
 
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class TaskServiceImpl implements TaskService {
             categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Categoria no encontrada con ID: " + catId));
         }
+        taskToCreate.setCreatedAt(Instant.now().toString());
         final Task savedTask = taskRepository.save(taskToCreate);
         return TaskMapper.toDto(savedTask);
     }
@@ -71,6 +73,7 @@ public class TaskServiceImpl implements TaskService {
         final Task task = taskRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Tarea no encontrada con ID: " + id));
         task.setCompleted(!task.isCompleted());
+        task.setUpdatedAt(Instant.now().toString());
         final Task savedTask = taskRepository.save(task);
         return TaskMapper.toDto(savedTask);
     }
@@ -95,6 +98,17 @@ public class TaskServiceImpl implements TaskService {
             task.setCategoryId(null);
         }
 
+        task.setUpdatedAt(Instant.now().toString());
+        final Task saved = taskRepository.save(task);
+        return TaskMapper.toDto(saved);
+    }
+
+    @Override
+    public TaskDto toggleDeleteTask(String id) {
+        final Task task = taskRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Tarea no encontrada con ID: " + id));
+        task.setDeleted(!task.isDeleted());
+        task.setUpdatedAt(Instant.now().toString());
         final Task saved = taskRepository.save(task);
         return TaskMapper.toDto(saved);
     }

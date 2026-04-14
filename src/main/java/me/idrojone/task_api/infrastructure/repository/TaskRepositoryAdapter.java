@@ -76,4 +76,9 @@ public class TaskRepositoryAdapter implements TaskRepository {
         var saved = mongoRepository.save(doc);
         return TaskDocumentMapper.toDomain(saved);
     }
+
+    @Override
+    public void deleteById(String id) {
+        mongoRepository.deleteById(id);
+    }
 }

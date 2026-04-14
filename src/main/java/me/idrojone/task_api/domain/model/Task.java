@@ -6,6 +6,9 @@ public class Task {
     private String description;
     private boolean completed;
     private String categoryId;
+    private boolean deleted;
+    private String createdAt;
+    private String updatedAt;
 
     public String getId() {
         return id;
@@ -45,5 +48,30 @@ public class Task {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -11,4 +11,5 @@ public interface TaskService {
     TaskDto createNewTask(TaskInput input);
     TaskDto toggleTaskStatus(String id);
     TaskDto updateTask(String id, TaskInput input);
+    TaskDto toggleDeleteTask(String id);
 }

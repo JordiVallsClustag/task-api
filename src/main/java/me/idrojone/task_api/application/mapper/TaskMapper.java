@@ -15,7 +15,10 @@ public final class TaskMapper {
             task.getTitle(),
             task.getDescription(),
             task.isCompleted(),
-            task.getCategoryId()
+            task.getCategoryId(),
+            task.isDeleted(),
+            task.getCreatedAt(),
+            task.getUpdatedAt()
         );
     }
 
