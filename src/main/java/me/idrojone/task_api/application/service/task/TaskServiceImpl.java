@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import me.idrojone.task_api.application.dto.PageInfo;
 import me.idrojone.task_api.application.dto.task.TaskDto;
@@ -13,11 +12,10 @@ import me.idrojone.task_api.application.dto.task.TaskPage;
 import me.idrojone.task_api.application.mapper.TaskMapper;
 import me.idrojone.task_api.domain.exception.NotFoundException;
 import me.idrojone.task_api.domain.model.Task;
-import me.idrojone.task_api.domain.repository.TaskRepository;
 import me.idrojone.task_api.domain.repository.CategoryRepository;
+import me.idrojone.task_api.domain.repository.TaskRepository;
 
 @Service
-@Transactional
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final CategoryRepository categoryRepository;

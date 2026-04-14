@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import me.idrojone.task_api.application.dto.PageInfo;
 import me.idrojone.task_api.application.dto.category.CategoryDto;
@@ -18,7 +17,6 @@ import me.idrojone.task_api.domain.repository.CategoryRepository;
 import me.idrojone.task_api.domain.repository.TaskRepository;
 
 @Service
-@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
