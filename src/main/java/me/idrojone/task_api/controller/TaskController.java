@@ -28,12 +28,13 @@ public class TaskController {
 
     @QueryMapping
     public TaskPage findAllTasks(@Argument("categoryId") String categoryId,
+                                @Argument Boolean deleted,
                                 @Argument Integer offset,
                                 @Argument Integer limit) {
         int off = offset == null ? 0 : offset;
         int lim = limit == null ? 10 : limit;
-        if (categoryId == null) return taskService.getAllTasks(off, lim);
-        return taskService.getTasksByCategory(categoryId, off, lim);
+        if (categoryId == null) return taskService.getAllTasks(off, lim, deleted);
+        return taskService.getTasksByCategory(categoryId, off, lim, deleted);
     }
 
     @SchemaMapping(typeName = "Task", field = "category")

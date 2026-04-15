@@ -27,9 +27,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskPage getAllTasks(int offset, int limit) {
-        List<Task> tasks = taskRepository.findAll(offset, limit);
-        int total = (int) taskRepository.count();
+    public TaskPage getAllTasks(int offset, int limit, Boolean deleted) {
+        List<Task> tasks = taskRepository.findAll(offset, limit, deleted);
+        int total = (int) taskRepository.count(deleted);
         List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
         boolean hasNext = offset + items.size() < total;
         boolean hasPrevious = offset > 0;
@@ -38,9 +38,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskPage getTasksByCategory(String categoryId, int offset, int limit) {
-        List<Task> tasks = taskRepository.findByCategoryId(categoryId, offset, limit);
-        int total = (int) taskRepository.countByCategoryId(categoryId);
+    public TaskPage getTasksByCategory(String categoryId, int offset, int limit, Boolean deleted) {
+        List<Task> tasks = taskRepository.findByCategoryId(categoryId, offset, limit, deleted);
+        int total = (int) taskRepository.countByCategoryId(categoryId, deleted);
         List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
         boolean hasNext = offset + items.size() < total;
         boolean hasPrevious = offset > 0;

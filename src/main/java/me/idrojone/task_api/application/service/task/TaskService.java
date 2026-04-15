@@ -5,8 +5,8 @@ import me.idrojone.task_api.application.dto.task.TaskInput;
 import me.idrojone.task_api.application.dto.task.TaskPage;
 
 public interface TaskService {
-    TaskPage getAllTasks(int offset, int limit);
-    TaskPage getTasksByCategory(String categoryId, int offset, int limit);
+    TaskPage getAllTasks(int offset, int limit, Boolean deleted);
+    TaskPage getTasksByCategory(String categoryId, int offset, int limit, Boolean deleted);
     TaskDto getTaskById(String id);
     TaskDto createNewTask(TaskInput input);
     TaskDto toggleTaskStatus(String id);

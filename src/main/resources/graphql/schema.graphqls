@@ -1,5 +1,5 @@
 type Query {
-    findAllTasks(categoryId: ID, offset: Int = 0, limit: Int = 10): TaskPage
+    findAllTasks(categoryId: ID, deleted: Boolean, offset: Int = 0, limit: Int = 10): TaskPage
     taskById(id: ID!): Task
     categories(offset: Int = 0, limit: Int = 10): CategoryPage
     categoryById(id: ID!): Category
