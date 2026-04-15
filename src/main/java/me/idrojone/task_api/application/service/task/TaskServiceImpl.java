@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import me.idrojone.task_api.application.dto.PageInfo;
 import me.idrojone.task_api.application.dto.task.TaskDto;
 import me.idrojone.task_api.application.dto.task.TaskInput;
+import me.idrojone.task_api.application.dto.task.TaskUpdateInput;
 import me.idrojone.task_api.application.dto.task.TaskPage;
 import me.idrojone.task_api.application.mapper.TaskMapper;
 import me.idrojone.task_api.domain.exception.NotFoundException;
@@ -79,7 +80,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto updateTask(String id, TaskInput input) {
+    public TaskDto updateTask(String id, TaskUpdateInput input) {
         final Task task = taskRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Tarea no encontrada con ID: " + id));
 

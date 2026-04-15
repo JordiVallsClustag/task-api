@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import me.idrojone.task_api.application.dto.category.CategoryDto;
 import me.idrojone.task_api.application.dto.task.TaskDto;
 import me.idrojone.task_api.application.dto.task.TaskInput;
+import me.idrojone.task_api.application.dto.task.TaskUpdateInput;
 import me.idrojone.task_api.application.dto.task.TaskPage;
 import me.idrojone.task_api.application.service.category.CategoryService;
 import me.idrojone.task_api.application.service.task.TaskService;
@@ -59,7 +60,7 @@ public class TaskController {
     }
 
     @MutationMapping
-    public TaskDto updateTask(@Argument String id, @Argument @Valid TaskInput input) {
+    public TaskDto updateTask(@Argument String id, @Argument TaskUpdateInput input) {
         return taskService.updateTask(id, input);
     }
 

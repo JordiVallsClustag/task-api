@@ -8,7 +8,7 @@ type Query {
 type Mutation {
     createTask(input: TaskInput!): Task
     toggleTask(id: ID!): Task
-    updateTask(id: ID!, input: TaskInput!): Task
+    updateTask(id: ID!, input: TaskUpdateInput!): Task
     toggleDeleteTask(id: ID!): Task
     createCategory(input: CategoryInput!): Category
     updateCategory(id: ID!, input: CategoryUpdateInput!): Category
@@ -17,6 +17,13 @@ type Mutation {
 
 input TaskInput {
     title: String!
+    description: String
+    completed: Boolean
+    categoryId: ID
+}
+
+input TaskUpdateInput {
+    title: String
     description: String
     completed: Boolean
     categoryId: ID
