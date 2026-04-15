@@ -35,6 +35,7 @@ public class TaskRepositoryAdapter implements TaskRepository {
     @Override
     public List<Task> findAll(int offset, int limit) {
         Query query = new Query().skip(offset).limit(limit);
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
         List<TaskDocument> docs = mongoTemplate.find(query, TaskDocument.class);
         return docs.stream().map(TaskDocumentMapper::toDomain).collect(Collectors.toList());
     }
@@ -42,9 +43,11 @@ public class TaskRepositoryAdapter implements TaskRepository {
     @Override
     public List<Task> findAll(int offset, int limit, Boolean deleted) {
         Query query = new Query();
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
         if (deleted != null) {
             query.addCriteria(Criteria.where("deleted").is(deleted));
         }
+
         query.skip(offset).limit(limit);
         List<TaskDocument> docs = mongoTemplate.find(query, TaskDocument.class);
         return docs.stream().map(TaskDocumentMapper::toDomain).collect(Collectors.toList());
