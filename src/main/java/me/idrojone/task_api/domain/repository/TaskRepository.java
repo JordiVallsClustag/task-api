@@ -15,8 +15,10 @@ public interface TaskRepository {
     Optional<Task> findById(String id);
     long count();
     long count(Boolean deleted);
+    long countCompleted(Boolean deleted);
     long countByCategoryId(String categoryId);
     long countByCategoryId(String categoryId, Boolean deleted);
+    long countCompletedByCategoryId(String categoryId, Boolean deleted);
     Task save(Task task);
     void deleteById(String id);
 }

@@ -7,6 +7,7 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 import me.idrojone.task_api.application.dto.PageInfo;
+import me.idrojone.task_api.application.dto.PageInfoTask;
 import me.idrojone.task_api.application.dto.task.TaskDto;
 import me.idrojone.task_api.application.dto.task.TaskInput;
 import me.idrojone.task_api.application.dto.task.TaskUpdateInput;
@@ -34,7 +35,8 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
         boolean hasNext = offset + items.size() < total;
         boolean hasPrevious = offset > 0;
-        PageInfo pageInfo = new PageInfo(offset, limit, total, hasNext, hasPrevious);
+        int taskCompleted = (int) taskRepository.countCompleted(deleted);
+        PageInfoTask pageInfo = new PageInfoTask(offset, limit, total, taskCompleted, hasNext, hasPrevious);
         return new TaskPage(items, pageInfo);
     }
 
@@ -45,7 +47,8 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
         boolean hasNext = offset + items.size() < total;
         boolean hasPrevious = offset > 0;
-        PageInfo pageInfo = new PageInfo(offset, limit, total, hasNext, hasPrevious);
+        int taskCompleted = (int) taskRepository.countCompletedByCategoryId(categoryId, deleted);
+        PageInfoTask pageInfo = new PageInfoTask(offset, limit, total, taskCompleted, hasNext, hasPrevious);
         return new TaskPage(items, pageInfo);
     }
 

@@ -49,9 +49,18 @@ type PageInfo {
     hasPreviousPage: Boolean
 }
 
+type PageInfoTask {
+    offset: Int
+    limit: Int
+    totalCount: Int
+    taskCompleted: Int
+    hasNextPage: Boolean
+    hasPreviousPage: Boolean
+}
+
 type TaskPage {
     items: [Task]
-    pageInfo: PageInfo
+    pageInfo: PageInfoTask
 }
 
 type CategoryPage {
