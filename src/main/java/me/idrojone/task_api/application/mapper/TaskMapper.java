@@ -29,7 +29,7 @@ public final class TaskMapper {
         Task task = new Task();
         task.setTitle(input.title());
         task.setDescription(input.description());
-        task.setCompleted(false);
+        task.setCompleted(input.completed() != null ? input.completed() : false);
         task.setCategoryId(input.categoryId());
         return task;
     }

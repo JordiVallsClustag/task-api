@@ -86,7 +86,13 @@ public class TaskServiceImpl implements TaskService {
         if (input.title() != null) {
             task.setTitle(input.title());
         }
-        task.setDescription(input.description());
+        if (input.description() != null) {
+            task.setDescription(input.description());
+        }
+
+        if (input.completed() != null) {
+            task.setCompleted(input.completed());
+        }
 
         final String newCategoryId = input.categoryId();
         if (newCategoryId != null) {
