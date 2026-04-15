@@ -12,6 +12,7 @@ type Mutation {
     toggleDeleteTask(id: ID!): Task
     createCategory(input: CategoryInput!): Category
     updateCategory(id: ID!, input: CategoryUpdateInput!): Category
+    toggleDeleteCategory(id: ID!): Category
 }
 
 input TaskInput {

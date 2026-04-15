@@ -14,6 +14,7 @@ public class TaskDocument {
     @Indexed
     private String categoryId;
     private boolean deleted;
+    private boolean deletedByCategory;
     private String createdAt;
     private String updatedAt;
 
@@ -65,6 +66,14 @@ public class TaskDocument {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isDeletedByCategory() {
+        return deletedByCategory;
+    }
+
+    public void setDeletedByCategory(boolean deletedByCategory) {
+        this.deletedByCategory = deletedByCategory;
     }
 
     public String getCreatedAt() {

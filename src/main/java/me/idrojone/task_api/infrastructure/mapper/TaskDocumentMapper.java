@@ -17,6 +17,7 @@ public final class TaskDocumentMapper {
         doc.setCompleted(task.isCompleted());
         doc.setCategoryId(task.getCategoryId());
         doc.setDeleted(task.isDeleted());
+        doc.setDeletedByCategory(task.isDeletedByCategory());
         doc.setCreatedAt(task.getCreatedAt());
         doc.setUpdatedAt(task.getUpdatedAt());
         return doc;
@@ -33,6 +34,7 @@ public final class TaskDocumentMapper {
         task.setCompleted(doc.isCompleted());
         task.setCategoryId(doc.getCategoryId());
         task.setDeleted(doc.isDeleted());
+        task.setDeletedByCategory(doc.isDeletedByCategory());
         task.setCreatedAt(doc.getCreatedAt());
         task.setUpdatedAt(doc.getUpdatedAt());
         return task;

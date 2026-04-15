@@ -7,9 +7,17 @@ public class Task {
     private boolean completed;
     private String categoryId;
     private boolean deleted;
+    private boolean deletedByCategory;
     private String createdAt;
     private String updatedAt;
 
+
+
+    /**
+     * ==============================================================================
+     * Getters and Setters
+     * ==============================================================================
+     */
     public String getId() {
         return id;
     }
@@ -56,6 +64,14 @@ public class Task {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isDeletedByCategory() {
+        return deletedByCategory;
+    }
+
+    public void setDeletedByCategory(boolean deletedByCategory) {
+        this.deletedByCategory = deletedByCategory;
     }
 
     public String getCreatedAt() {

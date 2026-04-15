@@ -10,4 +10,5 @@ public interface CategoryService {
     CategoryDto getCategoryById(String id);
     CategoryDto createNewCategory(CategoryInput input);
     CategoryDto updateCategory(String id, CategoryUpdateInput input);
+    CategoryDto toggleDeleteCategory(String id);
 }

@@ -2,6 +2,7 @@ package me.idrojone.task_api.application.service.category;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.Instant;
 
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,41 @@ public class CategoryServiceImpl implements CategoryService {
                 t.setCategoryId(null);
                 taskRepository.save(t);
             });
+        }
+
+        return CategoryMapper.toDto(saved);
+    }
+
+    @Override
+    public CategoryDto toggleDeleteCategory(String id) {
+        final Category c = categoryRepository.findByIdIncludeDeleted(id)
+            .orElseThrow(() -> new NotFoundException("Categoria no encontrada con ID: " + id));
+
+        boolean newDeleted = !c.isDeleted();
+        c.setDeleted(newDeleted);
+        c.setDeletedAt(newDeleted ? Instant.now().toString() : null);
+
+        final Category saved = categoryRepository.save(c);
+
+        // Cascade to tasks: mark tasks deleted / restore those deleted by category
+        if (newDeleted) {
+            taskRepository.findByCategoryId(id).stream()
+                .filter(t -> !t.isDeleted())
+                .forEach(t -> {
+                    t.setDeleted(true);
+                    t.setDeletedByCategory(true);
+                    t.setUpdatedAt(Instant.now().toString());
+                    taskRepository.save(t);
+                });
+        } else {
+            taskRepository.findByCategoryId(id).stream()
+                .filter(t -> t.isDeletedByCategory())
+                .forEach(t -> {
+                    t.setDeleted(false);
+                    t.setDeletedByCategory(false);
+                    t.setUpdatedAt(Instant.now().toString());
+                    taskRepository.save(t);
+                });
         }
 
         return CategoryMapper.toDto(saved);

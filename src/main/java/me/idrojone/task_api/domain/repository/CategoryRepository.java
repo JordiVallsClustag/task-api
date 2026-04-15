@@ -10,6 +10,7 @@ public interface CategoryRepository {
     List<Category> findAll();
     List<Category> findAll(int offset, int limit);
     Optional<Category> findById(String id);
+    Optional<Category> findByIdIncludeDeleted(String id);
     long count();
     Category save(Category category);
 }

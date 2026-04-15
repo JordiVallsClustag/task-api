@@ -41,4 +41,9 @@ public class CategoryController {
     public CategoryDto updateCategory(@Argument String id, @Argument CategoryUpdateInput input) {
         return categoryService.updateCategory(id, input);
     }
+
+    @MutationMapping
+    public CategoryDto toggleDeleteCategory(@Argument String id) {
+        return categoryService.toggleDeleteCategory(id);
+    }
 }

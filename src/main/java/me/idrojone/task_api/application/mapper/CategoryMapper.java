@@ -17,6 +17,8 @@ public final class CategoryMapper {
         Category c = new Category();
         c.setName(input.name());
         c.setActive(true);
+        c.setDeleted(false);
+        c.setDeletedAt(null);
         return c;
     }
 }

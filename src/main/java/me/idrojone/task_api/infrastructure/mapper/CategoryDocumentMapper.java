@@ -12,6 +12,8 @@ public final class CategoryDocumentMapper {
         doc.setId(category.getId());
         doc.setName(category.getName());
         doc.setActive(category.isActive());
+        doc.setDeleted(category.isDeleted());
+        doc.setDeletedAt(category.getDeletedAt());
         return doc;
     }
 
@@ -21,6 +23,8 @@ public final class CategoryDocumentMapper {
         c.setId(doc.getId());
         c.setName(doc.getName());
         c.setActive(doc.isActive());
+        c.setDeleted(doc.isDeleted());
+        c.setDeletedAt(doc.getDeletedAt());
         return c;
     }
 }
