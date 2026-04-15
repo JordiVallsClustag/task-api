@@ -29,12 +29,7 @@ echo "MongoDB is up. Checking replica set..."
 
 if mongosh --quiet --host "$HOST" --port "$PORT" --eval "try { rs.status(); print('RS_OK'); } catch(e) { print('RS_NOT_INIT'); }" | grep -q "RS_NOT_INIT"; then
   echo "Initializing replica set ${REPL_SET_NAME}..."
-  
-  # CRITICAL CHANGE: Use 'mongodb:27017' explicitly for the member host
-  mongosh --quiet --host "$HOST" --port "$PORT" --eval "rs.initiate({
-    _id: '${REPL_SET_NAME}', 
-    members: [{ _id: 0, host: 'mongodb:27017' }]
-  });"
+  mongosh --quiet --host "$HOST" --port "$PORT" --eval "rs.initiate({_id: '${REPL_SET_NAME}', members: [{ _id: 0, host: '${HOST}:${PORT}' }]});"
 else
   echo "Replica set already initialized"
 fi
