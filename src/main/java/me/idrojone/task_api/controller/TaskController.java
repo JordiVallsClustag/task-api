@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
 import me.idrojone.task_api.application.dto.category.CategoryDto;
+import java.util.List;
 import me.idrojone.task_api.application.dto.task.TaskDto;
 import me.idrojone.task_api.application.dto.task.TaskInput;
 import me.idrojone.task_api.application.dto.task.TaskUpdateInput;
@@ -28,14 +29,13 @@ public class TaskController {
     }
 
     @QueryMapping
-    public TaskPage findAllTasks(@Argument("categoryId") String categoryId,
+    public TaskPage findAllTasks(@Argument("categoryIds") List<String> categoryIds,
                                 @Argument Boolean deleted,
                                 @Argument Integer offset,
                                 @Argument Integer limit) {
         int off = offset == null ? 0 : offset;
         int lim = limit == null ? 10 : limit;
-        if (categoryId == null) return taskService.getAllTasks(off, lim, deleted);
-        return taskService.getTasksByCategory(categoryId, off, lim, deleted);
+        return taskService.getAllTasks(off, lim, deleted, categoryIds);
     }
 
     @SchemaMapping(typeName = "Task", field = "category")

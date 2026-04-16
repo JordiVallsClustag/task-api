@@ -6,7 +6,6 @@ import java.time.Instant;
 
 import org.springframework.stereotype.Service;
 
-import me.idrojone.task_api.application.dto.PageInfo;
 import me.idrojone.task_api.application.dto.PageInfoTask;
 import me.idrojone.task_api.application.dto.task.TaskDto;
 import me.idrojone.task_api.application.dto.task.TaskInput;
@@ -29,25 +28,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskPage getAllTasks(int offset, int limit, Boolean deleted) {
-        List<Task> tasks = taskRepository.findAll(offset, limit, deleted);
-        int total = (int) taskRepository.count(deleted);
+    public TaskPage getAllTasks(int offset, int limit, Boolean deleted, List<String> categoryIds) {
+        List<Task> tasks;
+        int total;
+        int taskCompleted;
+        if (categoryIds != null && !categoryIds.isEmpty()) {
+            tasks = taskRepository.findByCategoryIds(categoryIds, offset, limit, deleted);
+            total = (int) taskRepository.countByCategoryIds(categoryIds, deleted);
+            taskCompleted = (int) taskRepository.countCompletedByCategoryIds(categoryIds, deleted);
+        } else {
+            tasks = taskRepository.findAll(offset, limit, deleted);
+            total = (int) taskRepository.count(deleted);
+            taskCompleted = (int) taskRepository.countCompleted(deleted);
+        }
         List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
         boolean hasNext = offset + items.size() < total;
         boolean hasPrevious = offset > 0;
-        int taskCompleted = (int) taskRepository.countCompleted(deleted);
-        PageInfoTask pageInfo = new PageInfoTask(offset, limit, total, taskCompleted, hasNext, hasPrevious);
-        return new TaskPage(items, pageInfo);
-    }
-
-    @Override
-    public TaskPage getTasksByCategory(String categoryId, int offset, int limit, Boolean deleted) {
-        List<Task> tasks = taskRepository.findByCategoryId(categoryId, offset, limit, deleted);
-        int total = (int) taskRepository.countByCategoryId(categoryId, deleted);
-        List<TaskDto> items = tasks.stream().map(TaskMapper::toDto).collect(Collectors.toList());
-        boolean hasNext = offset + items.size() < total;
-        boolean hasPrevious = offset > 0;
-        int taskCompleted = (int) taskRepository.countCompletedByCategoryId(categoryId, deleted);
         PageInfoTask pageInfo = new PageInfoTask(offset, limit, total, taskCompleted, hasNext, hasPrevious);
         return new TaskPage(items, pageInfo);
     }

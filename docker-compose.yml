@@ -38,7 +38,7 @@ services:
         condition: service_healthy
       mongo-init-replica:
         condition: service_completed_successfully
-
+        
 volumes:
   mongodb_data:
 networks:

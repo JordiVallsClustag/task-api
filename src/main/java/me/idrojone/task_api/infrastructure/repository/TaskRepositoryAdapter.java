@@ -82,6 +82,34 @@ public class TaskRepositoryAdapter implements TaskRepository {
     }
 
     @Override
+    public List<Task> findByCategoryIds(List<String> categoryIds) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds));
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        List<TaskDocument> docs = mongoTemplate.find(query, TaskDocument.class);
+        return docs.stream().map(TaskDocumentMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findByCategoryIds(List<String> categoryIds, int offset, int limit) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds)).skip(offset).limit(limit);
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        List<TaskDocument> docs = mongoTemplate.find(query, TaskDocument.class);
+        return docs.stream().map(TaskDocumentMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findByCategoryIds(List<String> categoryIds, int offset, int limit, Boolean deleted) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds));
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        if (deleted != null) {
+            query.addCriteria(Criteria.where("deleted").is(deleted));
+        }
+        query.skip(offset).limit(limit);
+        List<TaskDocument> docs = mongoTemplate.find(query, TaskDocument.class);
+        return docs.stream().map(TaskDocumentMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Task> findById(String id) {
         return mongoRepository.findById(id)
                 .map(TaskDocumentMapper::toDomain);
@@ -122,6 +150,23 @@ public class TaskRepositoryAdapter implements TaskRepository {
     }
 
     @Override
+    public long countByCategoryIds(List<String> categoryIds) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds));
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        return mongoTemplate.count(query, TaskDocument.class);
+    }
+
+    @Override
+    public long countByCategoryIds(List<String> categoryIds, Boolean deleted) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds));
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        if (deleted != null) {
+            query.addCriteria(Criteria.where("deleted").is(deleted));
+        }
+        return mongoTemplate.count(query, TaskDocument.class);
+    }
+
+    @Override
     public long countCompleted(Boolean deleted) {
         Query query = new Query(Criteria.where("completed").is(true));
         query.addCriteria(Criteria.where("deletedByCategory").ne(true));
@@ -134,6 +179,16 @@ public class TaskRepositoryAdapter implements TaskRepository {
     @Override
     public long countCompletedByCategoryId(String categoryId, Boolean deleted) {
         Query query = new Query(Criteria.where("categoryId").is(categoryId).and("completed").is(true));
+        query.addCriteria(Criteria.where("deletedByCategory").ne(true));
+        if (deleted != null) {
+            query.addCriteria(Criteria.where("deleted").is(deleted));
+        }
+        return mongoTemplate.count(query, TaskDocument.class);
+    }
+
+    @Override
+    public long countCompletedByCategoryIds(List<String> categoryIds, Boolean deleted) {
+        Query query = new Query(Criteria.where("categoryId").in(categoryIds).and("completed").is(true));
         query.addCriteria(Criteria.where("deletedByCategory").ne(true));
         if (deleted != null) {
             query.addCriteria(Criteria.where("deleted").is(deleted));
